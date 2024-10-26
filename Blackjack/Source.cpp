@@ -10,9 +10,7 @@ struct Card { // Структура гральної картки
 };
 
 int main() {
-    static sf::Texture back, place, hit, dob, stand, clear, easy, medium, hard, yes, no;
     static sf::Texture cards[52]; // Текстури карт
-    static sf::Texture chip[5]; // Текстури фішек
 
     cards[0].loadFromFile("Images\\1.png"); // Завантаження текстур з папки Images
     cards[1].loadFromFile("Images\\2.png");
@@ -67,11 +65,25 @@ int main() {
     cards[50].loadFromFile("Images\\51.png");
     cards[51].loadFromFile("Images\\52.png");
 
+    static sf::Texture chip[5]; // Текстури фішек
+
     chip[0].loadFromFile("Images\\c1.png");
     chip[1].loadFromFile("Images\\c10.png");
     chip[2].loadFromFile("Images\\c100.png");
     chip[3].loadFromFile("Images\\c1000.png");
     chip[4].loadFromFile("Images\\max.png");
+
+    static sf::Texture back;
+    static sf::Texture hit;
+    static sf::Texture dob;
+    static sf::Texture stand;
+    static sf::Texture clear;
+    static sf::Texture place;
+    static sf::Texture easy;
+    static sf::Texture medium;
+    static sf::Texture hard;
+    static sf::Texture yes;
+    static sf::Texture no;
 
     back.loadFromFile("Images\\back.png");
     hit.loadFromFile("Images\\hit.png");
@@ -86,8 +98,9 @@ int main() {
     no.loadFromFile("Images\\no.png");
 
     std::vector<sf::Sprite> schip; // Вектор спрайтів фішек
+    schip.reserve(5);
 
-    for (int i = 0; i < 5; i++) { // Ініціалізація координат спрайтів фішек
+    for (int i = 0; i < 5; ++i) { // Ініціалізація координат спрайтів фішек
         sf::Sprite s(chip[i]);
         s.setPosition(525 + (75 * i), 400);
         schip.push_back(s);
@@ -109,7 +122,11 @@ int main() {
         {cards[48], 10, 'S'}, {cards[49], 11, 'S'}, {cards[50], 12, 'S'}, {cards[51], 13, 'S'}
     };
 
-    std::vector<Card> player, enemy; // Вектор карт гравця та вектор карт дилера
+    std::vector<Card> player;
+    player.reserve(10);
+    std::vector<Card> enemy; // Вектор карт гравця та вектор карт дилера
+    enemy.reserve(10);
+
     static sf::Sprite sback(back); // Спрайт задній частини карт
 
     static sf::Font font; // Шрифт
@@ -332,7 +349,7 @@ int main() {
                     move = false;
                 }
             }
-            if (!move && event.type == sf::Event::MouseButtonReleased) move = true;
+            if (!move && event.type == sf::Event::MouseButtonReleased) { move = true; }
 
             if (life) {
                 balance.setString("Your balance: " + std::to_string(money));
@@ -376,11 +393,11 @@ int main() {
                 window.clear(sf::Color(0, 64, 0, 0));
 
                 if (betprocess) { // Процес ставки
-                    if (std::min(money, enemymoney) > 1000) max = 1000;
-                    else max = std::min(money, enemymoney);
+                    if (std::min(money, enemymoney) > 1000) { max = 1000; }
+                    else { max = std::min(money, enemymoney); }
                     maxbet.setString("Max bet: " + std::to_string(max));
 
-                    for (int i = 0; i < 5; i++) window.draw(schip[i]);
+                    for (int i = 0; i < 5; ++i) { window.draw(schip[i]); }
                     nowbet.setString("Place your bet: " + std::to_string(nbet));
 
                     window.draw(nowbet); // Відображення спрайтів
@@ -396,25 +413,42 @@ int main() {
                         int x = sf::Mouse::getPosition(window).x;
                         int y = sf::Mouse::getPosition(window).y;
 
-                        if ((x >= 525 && x <= 575) && (y >= 400 && y <= 450) && nbet + 1 < max) { nbet++; move = false; }
-                        else if ((x >= 600 && x <= 650) && (y >= 400 && y <= 450) && nbet + 10 <= max) { nbet += 10; move = false; }
-                        else if ((x >= 675 && x <= 725) && (y >= 400 && y <= 450) && nbet + 100 <= max) { nbet += 100; move = false; }
-                        else if ((x >= 750 && x <= 800) && (y >= 400 && y <= 450) && nbet + 1000 <= max) { nbet += 1000; move = false; }
-                        else if ((x >= 825 && x <= 875) && (y >= 400 && y <= 450)) { nbet = max; move = false; }
-                        else if ((x >= 600 && x <= 794) && (y >= 500 && y <= 572) && nbet > 0) { nbet = 0; move = false; }
-                        else if ((x >= 600 && x <= 806) && (y >= 600 && y <= 678) && nbet > 0)
-                        {
+                        if ((x >= 525 && x <= 575) && (y >= 400 && y <= 450) && nbet + 1 < max) {
+                            nbet++;
+                            move = false;
+                        } 
+                        else if ((x >= 600 && x <= 650) && (y >= 400 && y <= 450) && nbet + 10 <= max) { 
+                            nbet += 10;
+                            move = false;
+                        } 
+                        else if ((x >= 675 && x <= 725) && (y >= 400 && y <= 450) && nbet + 100 <= max) { 
+                            nbet += 100;
+                            move = false;
+                        } 
+                        else if ((x >= 750 && x <= 800) && (y >= 400 && y <= 450) && nbet + 1000 <= max) {
+                            nbet += 1000;
+                            move = false;
+                        } 
+                        else if ((x >= 825 && x <= 875) && (y >= 400 && y <= 450)) { 
+                            nbet = max;
+                            move = false;
+                        } 
+                        else if ((x >= 600 && x <= 794) && (y >= 500 && y <= 572) && nbet > 0) { 
+                            nbet = 0;
+                            move = false;
+                        } 
+                        else if ((x >= 600 && x <= 806) && (y >= 600 && y <= 678) && nbet > 0) {
                             move = false;
                             betprocess = false;
                             enemybalance.setPosition(30, 405);
                             balance.setPosition(30, 330);
 
-                            if (!player.empty()) player.clear();
-                            if (!enemy.empty()) enemy.clear();
+                            if (!player.empty()) { player.clear(); }
+                            if (!enemy.empty()) { enemy.clear(); }
 
                             std::shuffle(Cards.begin(), Cards.end(), g); // Випадкове розтасовування вектору кортежів
 
-                            for (int i = 0; i < 10; i++) { // Заповнення вектора гравця картками
+                            for (std::size_t i = 0; i < 10; ++i) { // Заповнення вектора гравця картками
                                 Card temp;
                                 sf::Sprite st(std::get<sf::Texture>(Cards[i]));
                                 temp.power = std::get<int8_t>(Cards[i]);
@@ -424,7 +458,7 @@ int main() {
                                 player.push_back(temp);
                             }
 
-                            for (int i = 0; i < 10; i++) { // Заповнення вектора дилера картками
+                            for (std::size_t i = 0; i < 10; ++i) { // Заповнення вектора дилера картками
                                 Card temp;
                                 sf::Sprite st(std::get<sf::Texture>(Cards[i + 10]));
                                 temp.power = std::get<int8_t>(Cards[i + 10]);
@@ -451,16 +485,20 @@ int main() {
                             countenemyace = 0;
                         }
                     }
-                    if (!move && event.type == sf::Event::MouseButtonReleased) move = true;
+                    if (!move && event.type == sf::Event::MouseButtonReleased) { move = true; }
                 }
 
-                else if (!betprocess) // Процес бою з дилером
-                {
-                    for (int i = 0; i < hit; i++) window.draw(player[i].s);
+                else if (!betprocess) { // Процес бою з дилером 
+                    for (int i = 0; i < hit; i++) { 
+                        window.draw(player[i].s);
+                    }
 
                     for (int i = 0; i < enemyhit; i++) {
-                        if (show == 0 && i == 0) window.draw(sback);
-                        else window.draw(enemy[i].s);
+                        if (show == 0 && i == 0) { 
+                            window.draw(sback);
+                        } else { 
+                            window.draw(enemy[i].s);
+                        }
                     }
 
                     window.draw(balance); // Відображення спрайтів
@@ -472,12 +510,12 @@ int main() {
                     if (2 * nbet <= max && nbet != 0) { window.draw(bdouble); }
                     window.draw(bstand);
 
-                    if (show == 1) window.draw(blackjack); // Відображення спрайтів кінця бою
-                    else if (show == 2) window.draw(lost);
-                    else if (show == 3) window.draw(won);
-                    else if (show == 4) window.draw(draw);
-                    else if (show == 5) window.draw(s21);
-                    else if (show == 6) window.draw(bust);
+                    if (show == 1) { window.draw(blackjack); }// Відображення спрайтів кінця бою
+                    else if (show == 2) { window.draw(lost); }
+                    else if (show == 3) { window.draw(won); }
+                    else if (show == 4) { window.draw(draw); }
+                    else if (show == 5) { window.draw(s21); }
+                    else if (show == 6) { window.draw(bust); }
 
                     window.display();
 
@@ -505,8 +543,14 @@ int main() {
                         int x = sf::Mouse::getPosition(window).x;
                         int y = sf::Mouse::getPosition(window).y;
 
-                        if ((x >= 1250 && x <= 1358) && (y >= 600 && y <= 673) && partofgame == 0) { ++hit; move = false; }
-                        else if ((x >= 1200 && x <= 1409) && (y >= 700 && y <= 777) && partofgame == 0) { partofgame = 1; move = false; }
+                        if ((x >= 1250 && x <= 1358) && (y >= 600 && y <= 673) && partofgame == 0) { 
+                            ++hit;
+                            move = false;
+                        } 
+                        else if ((x >= 1200 && x <= 1409) && (y >= 700 && y <= 777) && partofgame == 0) { 
+                            partofgame = 1;
+                            move = false;
+                        } 
                         else if ((x >= 1175 && x <= 1425) && (y >= 800 && y <= 873) && partofgame == 0 && 2 * nbet <= max) {
                             nbet *= 2;
                             hit++;
@@ -515,29 +559,53 @@ int main() {
                             move = false;
                         }
                     }
-                    if (!move && event.type == sf::Event::MouseButtonReleased) move = true;
+                    if (!move && event.type == sf::Event::MouseButtonReleased) { move = true; }
 
-                    for (int i = beginhit; i < hit; i++) { // Обрахунок сил карт гравця
-                        if (player[i].power == 1 && power + 11 <= 21) { countace++; power += 11; }
-                        else if (player[i].power == 1 && power + 11 > 21) power += 1;
+                    for (int i = beginhit; i < hit; ++i) { // Обрахунок сил карт гравця
+                        if (player[i].power == 1 && power + 11 <= 21) { 
+                            ++countace;
+                            power += 11;
+                        } else if (player[i].power == 1 && power + 11 > 21) { 
+                            ++power;
+                        }
 
-                        if (player[i].power >= 10) power += 10;
-                        else if (player[i].power < 10 && player[i].power > 1) power += player[i].power;
+                        if (player[i].power >= 10) { 
+                            power += 10;
+                        } else if (player[i].power < 10 && player[i].power > 1) { 
+                            power += player[i].power;
+                        }
 
-                        if (i < 2 && power == 21) { bj = true; break; }
-                        else if (countace > 0 && power > 21) { power -= 10; countace--; }
+                        if (i < 2 && power == 21) { 
+                            bj = true;
+                            break;
+                        } else if (countace > 0 && power > 21) { 
+                            power -= 10;
+                            --countace;
+                        }
                     }
                     beginhit = hit;
 
-                    for (int i = beginenemyhit; i < enemyhit; i++) { // Обрахунок сил карт дилера
-                        if (enemy[i].power == 1 && enemypower + 11 <= 21) { countenemyace++; enemypower += 11; }
-                        else if (enemy[i].power == 1 && enemypower + 11 > 21) enemypower += 1;
+                    for (int i = beginenemyhit; i < enemyhit; ++i) { // Обрахунок сил карт дилера
+                        if (enemy[i].power == 1 && enemypower + 11 <= 21) { 
+                            ++countenemyace;
+                            enemypower += 11;
+                        } else if (enemy[i].power == 1 && enemypower + 11 > 21) {
+                            ++enemypower;
+                        }
 
-                        if (enemy[i].power >= 10) enemypower += 10;
-                        else if (enemy[i].power < 10 && enemy[i].power > 1) enemypower += enemy[i].power;
+                        if (enemy[i].power >= 10) {
+                            enemypower += 10;
+                        } else if (enemy[i].power < 10 && enemy[i].power > 1) {
+                            enemypower += enemy[i].power;
+                        }
 
-                        if (i < 2 && enemypower == 21) { ebj = true; break; }
-                        else if (countenemyace > 0 && enemypower > 21) { enemypower -= 10; countenemyace--; }
+                        if (i < 2 && enemypower == 21) { 
+                            ebj = true;
+                            break;
+                        } else if (countenemyace > 0 && enemypower > 21) { 
+                            enemypower -= 10;
+                            --countenemyace;
+                        }
                     }
                     beginenemyhit = enemyhit;
 
@@ -550,7 +618,6 @@ int main() {
                             enemymoney -= (3 * nbet / 2);
                             partofgame = 3;
                         }
-
                         else if (ebj && !bj) { // Випадок блекджека у дилера
                             bet.setString("Bet: " + std::to_string(nbet));
                             blackjack.setFillColor(sf::Color::Red);
@@ -559,13 +626,11 @@ int main() {
                             money -= (3 * nbet / 2);
                             partofgame = 3;
                         }
-
                         else if (ebj && bj) { // Випадок блекджека у обох
                             show = 4;
                             nbet = 0;
                             partofgame = 3;
                         }
-
                         else if (power == 21) { // Випадок 21 очок у гравця
                             s21.setFillColor(sf::Color::Blue);
                             show = 5;
@@ -573,7 +638,6 @@ int main() {
                             enemymoney -= nbet;
                             partofgame = 3;
                         }
-
                         else if (power > 21) { // Випадок перебору у гравця
                             bust.setFillColor(sf::Color::Red);
                             show = 6;
@@ -591,7 +655,6 @@ int main() {
                             enemymoney -= nbet;
                             partofgame = 3;
                         }
-
                         else if (power > 21) { // Випадок перебору у гравця
                             bust.setFillColor(sf::Color::Red);
                             show = 6;
@@ -599,8 +662,7 @@ int main() {
                             money -= nbet;
                             partofgame = 3;
                         }
-
-                        else if (enemypower < 17) enemyhit++; // Дилер бере карти
+                        else if (enemypower < 17) { ++enemyhit; } // Дилер бере карти
 
                         else {
                             if (enemypower > 21) { // Випадок перебору у дилера
@@ -610,14 +672,12 @@ int main() {
                                 money += nbet;
                                 partofgame = 3;
                             }
-
                             else if (enemypower < power) { // У дилера менше очок
                                 show = 3;
                                 enemymoney -= nbet;
                                 money += nbet;
                                 partofgame = 3;
                             }
-
                             else if (enemypower == 21) { // Випадок 21 очок у дилера
                                 s21.setFillColor(sf::Color::Red);
                                 show = 5;
@@ -625,14 +685,12 @@ int main() {
                                 money -= nbet;
                                 partofgame = 3;
                             }
-
                             else if (enemypower > power) { // У дилера більше очок
                                 show = 2;
                                 enemymoney += nbet;
                                 money -= nbet;
                                 partofgame = 3;
                             }
-
                             else if (enemypower == power) { // У дилера однакова кількість очок
                                 show = 4;
                                 nbet = 0;
@@ -660,8 +718,8 @@ int main() {
 
                     endwindow.clear(sf::Color(0, 64, 0, 0));
 
-                    if (money <= 0) endwindow.draw(defeat);
-                    else endwindow.draw(victory);
+                    if (money <= 0) { endwindow.draw(defeat); }
+                    else { endwindow.draw(victory); }
 
                     endwindow.draw(endm); // Відображення спрайтів
                     endwindow.draw(byes);
@@ -685,7 +743,7 @@ int main() {
                             break;
                         }
                     }
-                    if (!move && event.type == sf::Event::MouseButtonReleased) move = true;
+                    if (!move && event.type == sf::Event::MouseButtonReleased) { move = true; }
                 }
             }
         }
