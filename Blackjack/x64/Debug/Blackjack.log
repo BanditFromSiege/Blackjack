@@ -1,2 +1,6 @@
-﻿  LINK : отсутствует база данных D:\C++ коды\Blackjack\x64\Debug\Blackjack.pdb программы; выполняется полная компоновка
+﻿  Source.cpp
+D:\C++ коды\Blackjack\Blackjack\Source.cpp(105,27): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\C++ коды\Blackjack\Blackjack\Source.cpp(455,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
+D:\C++ коды\Blackjack\Blackjack\Source.cpp(465,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
+  LINK : отсутствует база данных D:\C++ коды\Blackjack\x64\Debug\Blackjack.pdb программы; выполняется полная компоновка
   Blackjack.vcxproj -> D:\C++ коды\Blackjack\x64\Debug\Blackjack.exe
