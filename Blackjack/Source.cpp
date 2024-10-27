@@ -105,7 +105,7 @@ int main() {
         schip.push_back(s);
     }
     // A vector of pairs of card textures and strengths
-    std::vector<std::pair<sf::Texture, int8_t>> Cards = {
+    std::vector<std::pair<sf::Texture&, int8_t>> Cards = {
         {cards[0], 1}, {cards[1], 2}, {cards[2], 3}, {cards[3], 4},
         {cards[4], 5}, {cards[5], 6}, {cards[6], 7}, {cards[7], 8},
         {cards[8], 9}, {cards[9], 10}, {cards[10], 11}, {cards[11], 12},

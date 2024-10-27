@@ -3,8 +3,8 @@ D:\C++ коды\Blackjack\Blackjack\Source.cpp(104,27): warning C4244: аргу�
 D:\C++ коды\Blackjack\Blackjack\Source.cpp(466,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
 D:\C++ коды\Blackjack\Blackjack\Source.cpp(475,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
   Создание кода
-  47 of 378 functions (12.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    25 functions had inline decision re-evaluated but remain unchanged
+  57 of 374 functions (15.2%) were compiled, the rest were copied from previous compilation.
+    56 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
   Blackjack.vcxproj -> D:\C++ коды\Blackjack\x64\Release\Blackjack.exe
