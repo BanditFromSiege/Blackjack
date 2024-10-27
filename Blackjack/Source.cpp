@@ -4,9 +4,8 @@
 #include <thread>
 
 struct Card { // The structure of the playing card
-    sf::Sprite s;
+    sf::Sprite sprite;
     int8_t power;
-    char suit;
 };
 
 int main() {
@@ -105,21 +104,21 @@ int main() {
         s.setPosition(525 + (75 * i), 400);
         schip.push_back(s);
     }
-    // A vector of tuples of card textures, strengths and suits
-    std::vector <std::tuple<sf::Texture, int8_t, char>> Cards = {
-        {cards[0], 1, 'C'}, {cards[1], 2, 'C'}, {cards[2], 3, 'C'}, {cards[3], 4, 'C'},
-        {cards[4], 5, 'C'}, {cards[5], 6, 'C'}, {cards[6], 7, 'C'}, {cards[7], 8, 'C'},
-        {cards[8], 9, 'C'}, {cards[9], 10, 'C'}, {cards[10], 11, 'C'}, {cards[11], 12, 'C'},
-        {cards[12], 13, 'C'}, {cards[13], 1, 'D'}, {cards[14], 2, 'D'}, {cards[15], 3, 'D'},
-        {cards[16], 4, 'D'}, {cards[17], 5, 'D'}, {cards[18], 6, 'D'}, {cards[19], 7, 'D'},
-        {cards[20], 8, 'D'}, {cards[21], 9, 'D'}, {cards[22], 10, 'D'}, {cards[23], 11, 'D'},
-        {cards[24], 12, 'D'}, {cards[25], 13, 'D'}, {cards[26], 1, 'H'}, {cards[27], 2, 'H'},
-        {cards[28], 3, 'H'}, {cards[29], 4, 'H'}, {cards[30], 5, 'H'}, {cards[31], 6, 'H'},
-        {cards[32], 7, 'H'}, {cards[33], 8, 'H'}, {cards[34], 9, 'H'}, {cards[35], 10, 'H'},
-        {cards[36], 11, 'H'}, {cards[37], 12, 'H'}, {cards[38], 13, 'H'}, {cards[39], 1, 'S'},
-        {cards[40], 2, 'S'}, {cards[41], 3, 'S'}, {cards[42], 4, 'S'}, {cards[43], 5, 'S'},
-        {cards[44], 6, 'S'}, {cards[45], 7, 'S'}, {cards[46], 8, 'S'}, {cards[47], 9, 'S'},
-        {cards[48], 10, 'S'}, {cards[49], 11, 'S'}, {cards[50], 12, 'S'}, {cards[51], 13, 'S'}
+    // A vector of pairs of card textures and strengths
+    std::vector<std::pair<sf::Texture, int8_t>> Cards = {
+        {cards[0], 1}, {cards[1], 2}, {cards[2], 3}, {cards[3], 4},
+        {cards[4], 5}, {cards[5], 6}, {cards[6], 7}, {cards[7], 8},
+        {cards[8], 9}, {cards[9], 10}, {cards[10], 11}, {cards[11], 12},
+        {cards[12], 13}, {cards[13], 1}, {cards[14], 2}, {cards[15], 3},
+        {cards[16], 4}, {cards[17], 5}, {cards[18], 6}, {cards[19], 7},
+        {cards[20], 8}, {cards[21], 9}, {cards[22], 10}, {cards[23], 11},
+        {cards[24], 12}, {cards[25], 13}, {cards[26], 1}, {cards[27], 2},
+        {cards[28], 3}, {cards[29], 4}, {cards[30], 5}, {cards[31], 6},
+        {cards[32], 7}, {cards[33], 8}, {cards[34], 9}, {cards[35], 10},
+        {cards[36], 11}, {cards[37], 12}, {cards[38], 13}, {cards[39], 1},
+        {cards[40], 2}, {cards[41], 3}, {cards[42], 4}, {cards[43], 5},
+        {cards[44], 6}, {cards[45], 7}, {cards[46], 8}, {cards[47], 9},
+        {cards[48], 10}, {cards[49], 11}, {cards[50], 12}, {cards[51], 13}
     };
 
     std::vector<Card> player; // A vector of player cards
@@ -231,6 +230,18 @@ int main() {
     logo.setCharacterSize(76);
     logo.setFillColor(sf::Color::Red);
     logo.setPosition(330, 40);
+
+    static sf::Text text_power_of_player;
+    text_power_of_player.setFont(font);
+    text_power_of_player.setCharacterSize(56);
+    text_power_of_player.setFillColor(sf::Color::Blue);
+    text_power_of_player.setPosition(1350, 430);
+
+    static sf::Text text_power_of_dealer;
+    text_power_of_dealer.setFont(font);
+    text_power_of_dealer.setCharacterSize(56);
+    text_power_of_dealer.setFillColor(sf::Color::Red);
+    text_power_of_dealer.setPosition(1350, 370);
 
     static sf::Sprite bplace(place);
     bplace.setPosition(600, 600);
@@ -450,21 +461,19 @@ int main() {
 
                             for (std::size_t i = 0; i < 10; ++i) { // Filling player's vector
                                 Card temp;
-                                sf::Sprite st(std::get<sf::Texture>(Cards[i]));
-                                temp.power = std::get<int8_t>(Cards[i]);
+                                sf::Sprite st(Cards[i].first);
+                                temp.power = Cards[i].second;
                                 st.setPosition(30 + (160 * i), 600);
-                                temp.s = st;
-                                temp.suit = std::get<char>(Cards[i]);
+                                temp.sprite = st;
                                 player.push_back(temp);
                             }
 
                             for (std::size_t i = 0; i < 10; ++i) { // Filling dealer's vector
                                 Card temp;
-                                sf::Sprite st(std::get<sf::Texture>(Cards[i + 10]));
-                                temp.power = std::get<int8_t>(Cards[i + 10]);
+                                sf::Sprite st(Cards[i + 10].first);
+                                temp.power = Cards[i + 10].second;
                                 st.setPosition(30 + (160 * i), 80);
-                                temp.s = st;
-                                temp.suit = std::get<char>(Cards[i + 10]);
+                                temp.sprite = st;
                                 enemy.push_back(temp);
                             }
 
@@ -489,15 +498,15 @@ int main() {
                 }
 
                 else if (!betprocess) { // The process of fighting with a dealer
-                    for (int i = 0; i < hit; i++) { 
-                        window.draw(player[i].s);
+                    for (int i = 0; i < hit; ++i) { 
+                        window.draw(player[i].sprite);
                     }
 
-                    for (int i = 0; i < enemyhit; i++) {
+                    for (int i = 0; i < enemyhit; ++i) {
                         if (show == 0 && i == 0) { 
                             window.draw(sback);
                         } else { 
-                            window.draw(enemy[i].s);
+                            window.draw(enemy[i].sprite);
                         }
                     }
 
@@ -507,6 +516,9 @@ int main() {
                     window.draw(dealercards);
                     window.draw(bet);
                     window.draw(bhit);
+                    if (beginhit != 0) { window.draw(text_power_of_player); }
+                    if (partofgame == 3) { window.draw(text_power_of_dealer); }
+
                     if (2 * nbet <= max && nbet != 0) { window.draw(bdouble); }
                     window.draw(bstand);
 
@@ -584,6 +596,7 @@ int main() {
                         }
                     }
                     beginhit = hit;
+                    text_power_of_player.setString(std::to_string(power));
 
                     for (int i = beginenemyhit; i < enemyhit; ++i) { // Calculation of dealer's cards strengths
                         if (enemy[i].power == 1 && enemypower + 11 <= 21) { 
@@ -608,6 +621,7 @@ int main() {
                         }
                     }
                     beginenemyhit = enemyhit;
+                    text_power_of_dealer.setString(std::to_string(enemypower));
 
                     if (partofgame == 0) { // During the battle process
                         if (bj && !ebj) { // A case of blackjack at the player
