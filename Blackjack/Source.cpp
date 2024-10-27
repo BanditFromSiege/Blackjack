@@ -3,16 +3,16 @@
 #include <chrono>
 #include <thread>
 
-struct Card { // Структура гральної картки
+struct Card { // The structure of the playing card
     sf::Sprite s;
     int8_t power;
     char suit;
 };
 
 int main() {
-    static sf::Texture cards[52]; // Текстури карт
+    static sf::Texture cards[52]; // Textures of playing cards
 
-    cards[0].loadFromFile("Images\\1.png"); // Завантаження текстур з папки Images
+    cards[0].loadFromFile("Images\\1.png"); // Loading textures from the Images folder
     cards[1].loadFromFile("Images\\2.png");
     cards[2].loadFromFile("Images\\3.png");
     cards[3].loadFromFile("Images\\4.png");
@@ -65,7 +65,7 @@ int main() {
     cards[50].loadFromFile("Images\\51.png");
     cards[51].loadFromFile("Images\\52.png");
 
-    static sf::Texture chip[5]; // Текстури фішек
+    static sf::Texture chip[5]; // Chip textures
 
     chip[0].loadFromFile("Images\\c1.png");
     chip[1].loadFromFile("Images\\c10.png");
@@ -97,16 +97,16 @@ int main() {
     yes.loadFromFile("Images\\yes.png");
     no.loadFromFile("Images\\no.png");
 
-    std::vector<sf::Sprite> schip; // Вектор спрайтів фішек
+    std::vector<sf::Sprite> schip; // Chip sprite vector
     schip.reserve(5);
 
-    for (int i = 0; i < 5; ++i) { // Ініціалізація координат спрайтів фішек
+    for (int i = 0; i < 5; ++i) { // Initialization of chip sprite coordinates
         sf::Sprite s(chip[i]);
         s.setPosition(525 + (75 * i), 400);
         schip.push_back(s);
     }
-
-    std::vector <std::tuple<sf::Texture, int8_t, char>> Cards = { // Вектор кортежів текстур, сили та масті карт
+    // A vector of tuples of card textures, strengths and suits
+    std::vector <std::tuple<sf::Texture, int8_t, char>> Cards = {
         {cards[0], 1, 'C'}, {cards[1], 2, 'C'}, {cards[2], 3, 'C'}, {cards[3], 4, 'C'},
         {cards[4], 5, 'C'}, {cards[5], 6, 'C'}, {cards[6], 7, 'C'}, {cards[7], 8, 'C'},
         {cards[8], 9, 'C'}, {cards[9], 10, 'C'}, {cards[10], 11, 'C'}, {cards[11], 12, 'C'},
@@ -122,17 +122,17 @@ int main() {
         {cards[48], 10, 'S'}, {cards[49], 11, 'S'}, {cards[50], 12, 'S'}, {cards[51], 13, 'S'}
     };
 
-    std::vector<Card> player;
+    std::vector<Card> player; // A vector of player cards
     player.reserve(10);
-    std::vector<Card> enemy; // Вектор карт гравця та вектор карт дилера
+    std::vector<Card> enemy; // A vector of dealer cards
     enemy.reserve(10);
 
-    static sf::Sprite sback(back); // Спрайт задній частини карт
+    static sf::Sprite sback(back); // Sprite of the back of the cards
 
-    static sf::Font font; // Шрифт
-    font.loadFromFile("Images\\arial.ttf"); // Завантаження шрифту
+    static sf::Font font; // Font
+    font.loadFromFile("Images\\arial.ttf"); // Downloading the font
 
-    static sf::Text yourcards; // Створення спрайтів текстів
+    static sf::Text yourcards; // Creation of text sprites
     yourcards.setFont(font);
     yourcards.setString("Your cards:");
     yourcards.setCharacterSize(56);
@@ -285,24 +285,24 @@ int main() {
 
     sback.setPosition(30, 80);
 
-    int16_t money = 0; // Гроші гравця
-    int16_t enemymoney = 0; // Гроші дилера
-    int16_t max = 1000; // Обмеження на ставку
-    int16_t nbet = 0; // Ставка
+    int16_t money = 0; // Player's money
+    int16_t enemymoney = 0; // Dealer's money
+    int16_t max = 1000; // Limits on the bet
+    int16_t nbet = 0; // Bet
 
-    bool life = false; // Індикатор життя гравця
-    bool move = true; // Індикатор натискання гравця 
-    bool betprocess = true; // Індикатор процесу ставки
-    bool game = true; // Індикатор всієї гри
+    bool life = false; // Player life indicator
+    bool move = true; // Player click indicator 
+    bool betprocess = true; // Bet progress indicator
+    bool game = true; // Game indicator
 
-    std::random_device rd; // Генератор випадкових чисел
+    std::random_device rd; // Random number generator
     std::mt19937 g(rd());
 
-    sf::Image icon; // Створення та завантаження іконки для вікон
+    sf::Image icon; // Creating and downloading icons for windows
     icon.loadFromFile("Images/ace.png");
 
     while(game) 
-    { // Вікно вибору складності
+    {// Difficulty selection window
         sf::RenderWindow beg(sf::VideoMode(1000, 563), "Blackjack", sf::Style::Close);
         beg.setFramerateLimit(60);
         beg.setIcon(32, 32, icon.getPixelsPtr());
@@ -317,32 +317,32 @@ int main() {
                 }
             }
 
-            beg.clear(sf::Color(0, 64, 0, 0)); // Відображення спрайтів
+            beg.clear(sf::Color(0, 64, 0, 0)); // Display sprites
             beg.draw(logo);
             beg.draw(choice);
             beg.draw(beasy);
             beg.draw(bmedium);
             beg.draw(bhard);
             beg.display();
-            // Вибір складнощів
+            // Choice of difficulties
             if (move && event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
             {
                 int x = sf::Mouse::getPosition(beg).x;
                 int y = sf::Mouse::getPosition(beg).y;
 
-                if ((x >= 160 && x <= 342) && (y >= 300 && y <= 387)) { // Легка складність
+                if ((x >= 160 && x <= 342) && (y >= 300 && y <= 387)) { // Easy difficulty
                     money = 8000;
                     enemymoney = 2000;
                     life = true;
                     move = false;
                 }
-                else if ((x >= 372 && x <= 648) && (y >= 305 && y <= 376)) { // Середня складність
+                else if ((x >= 372 && x <= 648) && (y >= 305 && y <= 376)) { // Medium difficulty
                     money = 5000;
                     enemymoney = 5000;
                     life = true;
                     move = false;
                 }
-                else if ((x >= 678 && x <= 850) && (y >= 300 && y <= 377)) { // Складна складність
+                else if ((x >= 678 && x <= 850) && (y >= 300 && y <= 377)) { // Hard difficulty
                     money = 2000;
                     enemymoney = 8000;
                     life = true;
@@ -359,13 +359,13 @@ int main() {
         }
 
         while (life) 
-        { // Вікно гри
+        {// Game window
             sf::RenderWindow window(sf::VideoMode(1440, 900), "Blackjack", sf::Style::Close);
             window.setFramerateLimit(60);
             window.setIcon(32, 32, icon.getPixelsPtr());
 
-            bool bj = false; // Індикатор блекджеку
-            bool ebj = false; // Індикатор блекджеку дилера
+            bool bj = false; // Player's blackjack indicator
+            bool ebj = false; // Dealer's blackjack indicator
 
             int8_t beginhit = 0;
             int8_t beginenemyhit = 0;
@@ -392,7 +392,7 @@ int main() {
 
                 window.clear(sf::Color(0, 64, 0, 0));
 
-                if (betprocess) { // Процес ставки
+                if (betprocess) { // The bet process
                     if (std::min(money, enemymoney) > 1000) { max = 1000; }
                     else { max = std::min(money, enemymoney); }
                     maxbet.setString("Max bet: " + std::to_string(max));
@@ -400,14 +400,14 @@ int main() {
                     for (int i = 0; i < 5; ++i) { window.draw(schip[i]); }
                     nowbet.setString("Place your bet: " + std::to_string(nbet));
 
-                    window.draw(nowbet); // Відображення спрайтів
+                    window.draw(nowbet); // Display sprites
                     window.draw(balance);
                     window.draw(enemybalance);
                     window.draw(maxbet);
                     window.draw(bclear);
                     window.draw(bplace);
                     window.display();
-                    // Вибір натискання на фішку
+                    // Choice of clicking on a chip
                     if (move && event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
                     {
                         int x = sf::Mouse::getPosition(window).x;
@@ -446,9 +446,9 @@ int main() {
                             if (!player.empty()) { player.clear(); }
                             if (!enemy.empty()) { enemy.clear(); }
 
-                            std::shuffle(Cards.begin(), Cards.end(), g); // Випадкове розтасовування вектору кортежів
+                            std::shuffle(Cards.begin(), Cards.end(), g); // Shuffle vector of tuples
 
-                            for (std::size_t i = 0; i < 10; ++i) { // Заповнення вектора гравця картками
+                            for (std::size_t i = 0; i < 10; ++i) { // Filling player's vector
                                 Card temp;
                                 sf::Sprite st(std::get<sf::Texture>(Cards[i]));
                                 temp.power = std::get<int8_t>(Cards[i]);
@@ -458,7 +458,7 @@ int main() {
                                 player.push_back(temp);
                             }
 
-                            for (std::size_t i = 0; i < 10; ++i) { // Заповнення вектора дилера картками
+                            for (std::size_t i = 0; i < 10; ++i) { // Filling dealer's vector
                                 Card temp;
                                 sf::Sprite st(std::get<sf::Texture>(Cards[i + 10]));
                                 temp.power = std::get<int8_t>(Cards[i + 10]);
@@ -488,7 +488,7 @@ int main() {
                     if (!move && event.type == sf::Event::MouseButtonReleased) { move = true; }
                 }
 
-                else if (!betprocess) { // Процес бою з дилером 
+                else if (!betprocess) { // The process of fighting with a dealer
                     for (int i = 0; i < hit; i++) { 
                         window.draw(player[i].s);
                     }
@@ -501,7 +501,7 @@ int main() {
                         }
                     }
 
-                    window.draw(balance); // Відображення спрайтів
+                    window.draw(balance); // Display sprites
                     window.draw(enemybalance);
                     window.draw(yourcards);
                     window.draw(dealercards);
@@ -510,7 +510,7 @@ int main() {
                     if (2 * nbet <= max && nbet != 0) { window.draw(bdouble); }
                     window.draw(bstand);
 
-                    if (show == 1) { window.draw(blackjack); }// Відображення спрайтів кінця бою
+                    if (show == 1) { window.draw(blackjack); } // Rendering end-of-battle sprites
                     else if (show == 2) { window.draw(lost); }
                     else if (show == 3) { window.draw(won); }
                     else if (show == 4) { window.draw(draw); }
@@ -519,8 +519,8 @@ int main() {
 
                     window.display();
 
-                    if (partofgame == 3) { // Кінець боя 
-                        std::this_thread::sleep_for(std::chrono::seconds(5)); // Пауза 5 секунд
+                    if (partofgame == 3) { // The end of the battle 
+                        std::this_thread::sleep_for(std::chrono::seconds(5)); // Pause 5 seconds
 
                         balance.setPosition(30, 5);
                         enemybalance.setPosition(30, 80);
@@ -531,13 +531,13 @@ int main() {
                         bj = false;
                         ebj = false;
                         betprocess = true;
-                        if (money <= 0 || enemymoney <= 0) { // Перевірка наявності грошей
+                        if (money <= 0 || enemymoney <= 0) { // Checking the availability of money
                             life = false;
                             window.close();
                             break;
                         }
                     }
-                    // Вибір продовження бою
+                    // Choosing to continue the fight
                     if (move && event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
                     {
                         int x = sf::Mouse::getPosition(window).x;
@@ -561,7 +561,7 @@ int main() {
                     }
                     if (!move && event.type == sf::Event::MouseButtonReleased) { move = true; }
 
-                    for (int i = beginhit; i < hit; ++i) { // Обрахунок сил карт гравця
+                    for (int i = beginhit; i < hit; ++i) { // Calculation of player's cards strengths
                         if (player[i].power == 1 && power + 11 <= 21) { 
                             ++countace;
                             power += 11;
@@ -585,7 +585,7 @@ int main() {
                     }
                     beginhit = hit;
 
-                    for (int i = beginenemyhit; i < enemyhit; ++i) { // Обрахунок сил карт дилера
+                    for (int i = beginenemyhit; i < enemyhit; ++i) { // Calculation of dealer's cards strengths
                         if (enemy[i].power == 1 && enemypower + 11 <= 21) { 
                             ++countenemyace;
                             enemypower += 11;
@@ -609,8 +609,8 @@ int main() {
                     }
                     beginenemyhit = enemyhit;
 
-                    if (partofgame == 0) { // Під час процесу бою
-                        if (bj && !ebj) { // Випадок блекджека у гравця
+                    if (partofgame == 0) { // During the battle process
+                        if (bj && !ebj) { // A case of blackjack at the player
                             bet.setString("Bet: " + std::to_string(nbet));
                             blackjack.setFillColor(sf::Color::Blue);
                             show = 1;
@@ -618,7 +618,7 @@ int main() {
                             enemymoney -= (3 * nbet / 2);
                             partofgame = 3;
                         }
-                        else if (ebj && !bj) { // Випадок блекджека у дилера
+                        else if (ebj && !bj) { // A case of blackjack at the dealer
                             bet.setString("Bet: " + std::to_string(nbet));
                             blackjack.setFillColor(sf::Color::Red);
                             show = 1;
@@ -626,19 +626,19 @@ int main() {
                             money -= (3 * nbet / 2);
                             partofgame = 3;
                         }
-                        else if (ebj && bj) { // Випадок блекджека у обох
+                        else if (ebj && bj) { // A case of blackjack for both
                             show = 4;
                             nbet = 0;
                             partofgame = 3;
                         }
-                        else if (power == 21) { // Випадок 21 очок у гравця
+                        else if (power == 21) { // A case of 21 points for a player
                             s21.setFillColor(sf::Color::Blue);
                             show = 5;
                             money += nbet;
                             enemymoney -= nbet;
                             partofgame = 3;
                         }
-                        else if (power > 21) { // Випадок перебору у гравця
+                        else if (power > 21) { // A case of player bust
                             bust.setFillColor(sf::Color::Red);
                             show = 6;
                             enemymoney += nbet;
@@ -647,51 +647,51 @@ int main() {
                         }
                     }
 
-                    else if (partofgame == 1) { // Натиснута кнопка stand або double
-                        if (power == 21) { // Випадок 21 очок у гравця
+                    else if (partofgame == 1) { // The stand or double button is pressed
+                        if (power == 21) { // A case of 21 points for a player
                             s21.setFillColor(sf::Color::Blue);
                             show = 5;
                             money += nbet;
                             enemymoney -= nbet;
                             partofgame = 3;
                         }
-                        else if (power > 21) { // Випадок перебору у гравця
+                        else if (power > 21) { // A case of player bust
                             bust.setFillColor(sf::Color::Red);
                             show = 6;
                             enemymoney += nbet;
                             money -= nbet;
                             partofgame = 3;
                         }
-                        else if (enemypower < 17) { ++enemyhit; } // Дилер бере карти
+                        else if (enemypower < 17) { ++enemyhit; } // The dealer takes cards
 
                         else {
-                            if (enemypower > 21) { // Випадок перебору у дилера
+                            if (enemypower > 21) { // A case of dealer bust
                                 bust.setFillColor(sf::Color::Blue);
                                 show = 6;
                                 enemymoney -= nbet;
                                 money += nbet;
                                 partofgame = 3;
                             }
-                            else if (enemypower < power) { // У дилера менше очок
+                            else if (enemypower < power) { // The dealer has fewer points
                                 show = 3;
                                 enemymoney -= nbet;
                                 money += nbet;
                                 partofgame = 3;
                             }
-                            else if (enemypower == 21) { // Випадок 21 очок у дилера
+                            else if (enemypower == 21) { // A case of 21 points at the dealer
                                 s21.setFillColor(sf::Color::Red);
                                 show = 5;
                                 enemymoney += nbet;
                                 money -= nbet;
                                 partofgame = 3;
                             }
-                            else if (enemypower > power) { // У дилера більше очок
+                            else if (enemypower > power) { // The dealer has more points
                                 show = 2;
                                 enemymoney += nbet;
                                 money -= nbet;
                                 partofgame = 3;
                             }
-                            else if (enemypower == power) { // У дилера однакова кількість очок
+                            else if (enemypower == power) { // The dealer has the same number of points
                                 show = 4;
                                 nbet = 0;
                                 partofgame = 3;
@@ -701,7 +701,7 @@ int main() {
                 }
             }
 
-            if (!life && game) { // Вікно результату гри
+            if (!life && game) { // Game result window
                 sf::RenderWindow endwindow(sf::VideoMode(1000, 563), "Blackjack", sf::Style::Close);
                 endwindow.setFramerateLimit(60);
                 endwindow.setIcon(32, 32, icon.getPixelsPtr());
@@ -721,22 +721,22 @@ int main() {
                     if (money <= 0) { endwindow.draw(defeat); }
                     else { endwindow.draw(victory); }
 
-                    endwindow.draw(endm); // Відображення спрайтів
+                    endwindow.draw(endm); // Display sprites
                     endwindow.draw(byes);
                     endwindow.draw(bno);
                     endwindow.display();
-                    // Вибір нової гри або виходу з гри
+                    // Selecting a new game or exiting the game
                     if (move && event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
                     {
                         int x = sf::Mouse::getPosition(endwindow).x;
                         int y = sf::Mouse::getPosition(endwindow).y;
 
-                        if ((x >= 320 && x <= 471) && (y >= 290 && y <= 364)) { // Нова гра
+                        if ((x >= 320 && x <= 471) && (y >= 290 && y <= 364)) { // New game
                             move = false;
                             endwindow.close();
                             break;
                         }
-                        else if ((x >= 511 && x <= 620) && (y >= 290 && y <= 367)) { // Вихід із гри
+                        else if ((x >= 511 && x <= 620) && (y >= 290 && y <= 367)) { // Quit the game
                             game = false;
                             move = false;
                             endwindow.close();

@@ -3,8 +3,7 @@ D:\C++ коды\Blackjack\Blackjack\Source.cpp(105,27): warning C4244: аргу�
 D:\C++ коды\Blackjack\Blackjack\Source.cpp(455,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
 D:\C++ коды\Blackjack\Blackjack\Source.cpp(465,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
   Создание кода
-  0 of 400 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 400 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Создание кода завершено
   Blackjack.vcxproj -> D:\C++ коды\Blackjack\x64\Release\Blackjack.exe
