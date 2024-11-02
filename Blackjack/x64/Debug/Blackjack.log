@@ -1,5 +1,5 @@
 ﻿  Source.cpp
 D:\C++ коды\Blackjack\Blackjack\Source.cpp(104,27): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\C++ коды\Blackjack\Blackjack\Source.cpp(466,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
-D:\C++ коды\Blackjack\Blackjack\Source.cpp(475,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
+D:\C++ коды\Blackjack\Blackjack\Source.cpp(490,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
+D:\C++ коды\Blackjack\Blackjack\Source.cpp(499,51): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
   Blackjack.vcxproj -> D:\C++ коды\Blackjack\x64\Debug\Blackjack.exe

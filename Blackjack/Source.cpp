@@ -243,6 +243,12 @@ int main() {
     text_power_of_dealer.setFillColor(sf::Color::Red);
     text_power_of_dealer.setPosition(1350, 370);
 
+    static sf::Text sround;
+    sround.setFont(font);
+    sround.setCharacterSize(56);
+    sround.setFillColor(sf::Color::White);
+    sround.setPosition(900, 3);
+
     static sf::Sprite bplace(place);
     bplace.setPosition(600, 600);
 
@@ -287,12 +293,12 @@ int main() {
     defeat.setFillColor(sf::Color::Red);
     defeat.setPosition(355, 40);
 
-    static sf::Text endm;
-    endm.setFont(font);
-    endm.setString("Play again?");
-    endm.setCharacterSize(76);
-    endm.setFillColor(sf::Color::White);
-    endm.setPosition(290, 170);
+    static sf::Text endmessage;
+    endmessage.setFont(font);
+    endmessage.setString("Play again?");
+    endmessage.setCharacterSize(76);
+    endmessage.setFillColor(sf::Color::White);
+    endmessage.setPosition(290, 170);
 
     sback.setPosition(30, 80);
 
@@ -300,9 +306,11 @@ int main() {
     int16_t enemymoney = 0; // Dealer's money
     int16_t max = 1000; // Limits on the bet
     int16_t nbet = 0; // Bet
+    std::size_t round = 1; // Rounds
 
     bool life = false; // Player life indicator
     bool move = true; // Player click indicator 
+    bool show_power = true; // Show power of cards indicator 
     bool betprocess = true; // Bet progress indicator
     bool game = true; // Game indicator
 
@@ -344,18 +352,21 @@ int main() {
                 if ((x >= 160 && x <= 342) && (y >= 300 && y <= 387)) { // Easy difficulty
                     money = 8000;
                     enemymoney = 2000;
+                    show_power = true;
                     life = true;
                     move = false;
                 }
                 else if ((x >= 372 && x <= 648) && (y >= 305 && y <= 376)) { // Medium difficulty
                     money = 5000;
                     enemymoney = 5000;
+                    show_power = true;
                     life = true;
                     move = false;
                 }
                 else if ((x >= 678 && x <= 850) && (y >= 300 && y <= 377)) { // Hard difficulty
                     money = 2000;
                     enemymoney = 8000;
+                    show_power = false;
                     life = true;
                     move = false;
                 }
@@ -363,8 +374,10 @@ int main() {
             if (!move && event.type == sf::Event::MouseButtonReleased) { move = true; }
 
             if (life) {
+                round = 1;
                 balance.setString("Your balance: " + std::to_string(money));
                 enemybalance.setString("Dealer's balance: " + std::to_string(enemymoney));
+                sround.setString("Round: " + std::to_string(round));
                 beg.close();
             }
         }
@@ -417,6 +430,7 @@ int main() {
                     window.draw(maxbet);
                     window.draw(bclear);
                     window.draw(bplace);
+                    window.draw(sround);
                     window.display();
                     // Choice of clicking on a chip
                     if (move && event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
@@ -424,23 +438,33 @@ int main() {
                         int x = sf::Mouse::getPosition(window).x;
                         int y = sf::Mouse::getPosition(window).y;
 
-                        if ((x >= 525 && x <= 575) && (y >= 400 && y <= 450) && nbet + 1 < max) {
-                            nbet++;
+                        if ((x >= 525 && x <= 575) && (y >= 400 && y <= 450) 
+                                && ((x - 550) * (x - 550) + (y - 425) * (y - 425) <= 625) && nbet + 1 < max)
+                        {
+                            ++nbet;
                             move = false;
                         } 
-                        else if ((x >= 600 && x <= 650) && (y >= 400 && y <= 450) && nbet + 10 <= max) { 
+                        else if ((x >= 600 && x <= 650) && (y >= 400 && y <= 450) 
+                                && ((x - 625) * (x - 625) + (y - 425) * (y - 425) <= 625) && nbet + 10 <= max) 
+                        {
                             nbet += 10;
                             move = false;
                         } 
-                        else if ((x >= 675 && x <= 725) && (y >= 400 && y <= 450) && nbet + 100 <= max) { 
+                        else if ((x >= 675 && x <= 725) && (y >= 400 && y <= 450) 
+                                && ((x - 700) * (x - 700) + (y - 425) * (y - 425) <= 625) && nbet + 100 <= max)
+                        {
                             nbet += 100;
                             move = false;
                         } 
-                        else if ((x >= 750 && x <= 800) && (y >= 400 && y <= 450) && nbet + 1000 <= max) {
+                        else if ((x >= 750 && x <= 800) && (y >= 400 && y <= 450) 
+                                && ((x - 775) * (x - 775) + (y - 425) * (y - 425) <= 625) && nbet + 1000 <= max) 
+                        {
                             nbet += 1000;
                             move = false;
                         } 
-                        else if ((x >= 825 && x <= 875) && (y >= 400 && y <= 450)) { 
+                        else if ((x >= 825 && x <= 875) && (y >= 400 && y <= 450) 
+                            && ((x - 850) * (x - 850) + (y - 425) * (y - 425) <= 625)) 
+                        {
                             nbet = max;
                             move = false;
                         } 
@@ -516,8 +540,10 @@ int main() {
                     window.draw(dealercards);
                     window.draw(bet);
                     window.draw(bhit);
-                    if (beginhit != 0) { window.draw(text_power_of_player); }
-                    if (partofgame == 3) { window.draw(text_power_of_dealer); }
+                    window.draw(sround);
+
+                    if (show_power && beginhit != 0) { window.draw(text_power_of_player); }
+                    if (show_power && partofgame == 3) { window.draw(text_power_of_dealer); }
 
                     if (2 * nbet <= max && nbet != 0) { window.draw(bdouble); }
                     window.draw(bstand);
@@ -538,12 +564,15 @@ int main() {
                         enemybalance.setPosition(30, 80);
                         balance.setString("Your balance: " + std::to_string(money));
                         enemybalance.setString("Dealer's balance: " + std::to_string(enemymoney));
+                        sround.setString("Round: " + std::to_string(++round));
                         nbet = 0;
                         move = true;
                         bj = false;
                         ebj = false;
                         betprocess = true;
                         if (money <= 0 || enemymoney <= 0) { // Checking the availability of money
+                            sround.setPosition(340, 420);
+                            sround.setString("Rounds: " + std::to_string(--round));
                             life = false;
                             window.close();
                             break;
@@ -735,9 +764,10 @@ int main() {
                     if (money <= 0) { endwindow.draw(defeat); }
                     else { endwindow.draw(victory); }
 
-                    endwindow.draw(endm); // Display sprites
+                    endwindow.draw(endmessage); // Display sprites
                     endwindow.draw(byes);
                     endwindow.draw(bno);
+                    endwindow.draw(sround);
                     endwindow.display();
                     // Selecting a new game or exiting the game
                     if (move && event.type == sf::Event::MouseButtonPressed && event.key.code == sf::Mouse::Left)
@@ -746,6 +776,7 @@ int main() {
                         int y = sf::Mouse::getPosition(endwindow).y;
 
                         if ((x >= 320 && x <= 471) && (y >= 290 && y <= 364)) { // New game
+                            sround.setPosition(900, 3);
                             move = false;
                             endwindow.close();
                             break;
