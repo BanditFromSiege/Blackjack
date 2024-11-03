@@ -438,40 +438,30 @@ int main() {
                         int x = sf::Mouse::getPosition(window).x;
                         int y = sf::Mouse::getPosition(window).y;
 
-                        if ((x >= 525 && x <= 575) && (y >= 400 && y <= 450) 
-                                && ((x - 550) * (x - 550) + (y - 425) * (y - 425) <= 625) && nbet + 1 < max)
-                        {
+                        if (((x - 550) * (x - 550) + (y - 425) * (y - 425) <= 625) && nbet + 1 <= max) {
                             ++nbet;
                             move = false;
-                        } 
-                        else if ((x >= 600 && x <= 650) && (y >= 400 && y <= 450) 
-                                && ((x - 625) * (x - 625) + (y - 425) * (y - 425) <= 625) && nbet + 10 <= max) 
-                        {
+                        }
+                        else if (((x - 625) * (x - 625) + (y - 425) * (y - 425) <= 625) && nbet + 10 <= max) {
                             nbet += 10;
                             move = false;
-                        } 
-                        else if ((x >= 675 && x <= 725) && (y >= 400 && y <= 450) 
-                                && ((x - 700) * (x - 700) + (y - 425) * (y - 425) <= 625) && nbet + 100 <= max)
-                        {
+                        }
+                        else if (((x - 700) * (x - 700) + (y - 425) * (y - 425) <= 625) && nbet + 100 <= max) {
                             nbet += 100;
                             move = false;
-                        } 
-                        else if ((x >= 750 && x <= 800) && (y >= 400 && y <= 450) 
-                                && ((x - 775) * (x - 775) + (y - 425) * (y - 425) <= 625) && nbet + 1000 <= max) 
-                        {
+                        }
+                        else if (((x - 775) * (x - 775) + (y - 425) * (y - 425) <= 625) && nbet + 1000 <= max) {
                             nbet += 1000;
                             move = false;
-                        } 
-                        else if ((x >= 825 && x <= 875) && (y >= 400 && y <= 450) 
-                            && ((x - 850) * (x - 850) + (y - 425) * (y - 425) <= 625)) 
-                        {
+                        }
+                        else if (((x - 850) * (x - 850) + (y - 425) * (y - 425) <= 625)) {
                             nbet = max;
                             move = false;
-                        } 
+                        }
                         else if ((x >= 600 && x <= 794) && (y >= 500 && y <= 572) && nbet > 0) { 
                             nbet = 0;
                             move = false;
-                        } 
+                        }
                         else if ((x >= 600 && x <= 806) && (y >= 600 && y <= 678) && nbet > 0) {
                             move = false;
                             betprocess = false;
